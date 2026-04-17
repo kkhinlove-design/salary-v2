@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 import { formatKRW } from '@/lib/format';
 import type { ProjectExpenditure, ProjectAssignment } from '@/lib/types';
 import EditableCell from '@/components/EditableCell';
+import DeleteButton from '@/components/DeleteButton';
 
 export default function ExpendituresPage() {
   const [expenditures, setExpenditures] = useState<ProjectExpenditure[]>([]);
@@ -140,6 +141,7 @@ export default function ExpendituresPage() {
                 <th>이름</th>
                 <th style={{ background: '#1e40af' }}>참여율</th>
                 <th style={{ background: '#1e40af' }}>참여일수</th>
+                <th></th>
                 <th>급여</th>
                 <th>초과수당</th>
                 <th>과기공제</th>
@@ -181,6 +183,18 @@ export default function ExpendituresPage() {
                   <td>{formatKRW(a.employer_insurance)}</td>
                   <td>{formatKRW(a.employer_retirement)}</td>
                   <td className="font-bold">{formatKRW(a.total_cost)}</td>
+                  <td style={{ textAlign: 'center' }}>
+                    <DeleteButton
+                      onDelete={async () => {
+                        const { error } = await supabase.from('project_assignments').delete().eq('id', a.id);
+                        if (error) { setMsg(`오류: ${error.message}`); return; }
+                        setAssignments(prev => prev.filter(x => x.id !== a.id));
+                        setMsg('배치 해제됨 (재계산 필요)');
+                        setTimeout(() => setMsg(''), 3000);
+                      }}
+                      confirmMessage={`"${a.employees?.name}"의 이 사업 배치를 해제하시겠습니까?`}
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -6,6 +6,7 @@ import { formatKRW, formatDate } from '@/lib/format';
 import type { Employee } from '@/lib/types';
 import EditableCell from '@/components/EditableCell';
 import { Plus } from 'lucide-react';
+import DeleteButton from '@/components/DeleteButton';
 
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -86,6 +87,7 @@ export default function EmployeesPage() {
               <th>세율</th>
               <th>과기공제</th>
               <th>상태</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -136,6 +138,18 @@ export default function EmployeesPage() {
                   onSave={v => updateField(emp.id, 'is_active', !!v)}
                   type="boolean"
                 />
+                <td style={{ textAlign: 'center' }}>
+                  <DeleteButton
+                    onDelete={async () => {
+                      const { error } = await supabase.from('employees').delete().eq('id', emp.id);
+                      if (error) { setMsg(`오류: ${error.message}`); return; }
+                      setEmployees(prev => prev.filter(e => e.id !== emp.id));
+                      setMsg('삭제됨');
+                      setTimeout(() => setMsg(''), 2000);
+                    }}
+                    confirmMessage={`"${emp.name}" 직원을 삭제하시겠습니까? 관련 급여/배치 데이터도 함께 삭제됩니다.`}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>
