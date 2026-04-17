@@ -6,6 +6,7 @@ import { formatKRW } from '@/lib/format';
 import type { ProjectExpenditure, ProjectAssignment } from '@/lib/types';
 import EditableCell from '@/components/EditableCell';
 import DeleteButton from '@/components/DeleteButton';
+import { Plus } from 'lucide-react';
 
 export default function ExpendituresPage() {
   const [expenditures, setExpenditures] = useState<ProjectExpenditure[]>([]);
@@ -13,12 +14,17 @@ export default function ExpendituresPage() {
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState('');
+  const [monthId, setMonthId] = useState('');
+  const [employees, setEmployees] = useState<{ id: string; name: string }[]>([]);
+  const [showAddAssign, setShowAddAssign] = useState(false);
+  const [newAssign, setNewAssign] = useState({ employee_id: '', participation_rate: '1', work_days: '31' });
 
   useEffect(() => {
     async function load() {
       const { data: months } = await supabase.from('payroll_months').select('id').order('year_month', { ascending: false }).limit(1);
       if (months && months.length > 0) {
         const mid = months[0].id;
+        setMonthId(mid);
         const { data: exps } = await supabase
           .from('project_expenditures')
           .select('*, projects(*)')
@@ -31,6 +37,9 @@ export default function ExpendituresPage() {
           .select('*, employees(*), projects(*)')
           .eq('payroll_month_id', mid);
         if (assigns) setAssignments(assigns);
+
+        const { data: emps } = await supabase.from('employees').select('id, name').eq('is_active', true).order('name');
+        if (emps) setEmployees(emps);
       }
       setLoading(false);
     }
@@ -129,11 +138,18 @@ export default function ExpendituresPage() {
       </div>
 
       {/* 선택된 사업의 인원별 상세 (편집 가능) */}
-      {selectedProject && selectedAssignments.length > 0 && (
+      {selectedProject && (
         <div className="stat-card overflow-x-auto">
-          <h3 className="text-lg font-bold mb-3">
-            {expenditures.find(e => e.project_id === selectedProject)?.projects?.name} - 인원별 상세
-          </h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-lg font-bold">
+              {expenditures.find(e => e.project_id === selectedProject)?.projects?.name} - 인원별 상세
+            </h3>
+            <button onClick={() => setShowAddAssign(true)} className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs">
+              <Plus size={14} />직원 배치 추가
+            </button>
+          </div>
+          {selectedAssignments.length === 0 && <p className="text-gray-400 text-sm py-4 text-center">배치된 직원이 없습니다. [직원 배치 추가]로 추가하세요.</p>}
+          {selectedAssignments.length > 0 && (
           <table className="data-table">
             <thead>
               <tr>
@@ -216,6 +232,65 @@ export default function ExpendituresPage() {
               </tr>
             </tfoot>
           </table>
+          )}
+        </div>
+      )}
+
+      {/* 직원 배치 추가 모달 */}
+      {showAddAssign && selectedProject && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowAddAssign(false)}>
+          <div className="bg-white rounded-xl p-6 w-[420px] shadow-xl" onClick={e => e.stopPropagation()}>
+            <h3 className="text-lg font-bold mb-4">직원 배치 추가</h3>
+            <p className="text-sm text-gray-500 mb-4">{expenditures.find(e => e.project_id === selectedProject)?.projects?.name}</p>
+            <div className="space-y-3">
+              <div>
+                <label className="text-sm font-medium">직원 *</label>
+                <select value={newAssign.employee_id} onChange={e => setNewAssign(p => ({ ...p, employee_id: e.target.value }))} className="w-full border rounded-lg px-3 py-2 mt-1">
+                  <option value="">선택</option>
+                  {employees.filter(e => !selectedAssignments.find(a => a.employee_id === e.id)).map(e => (
+                    <option key={e.id} value={e.id}>{e.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-sm font-medium">참여율 (0~1)</label>
+                  <input type="number" step="0.01" min="0" max="1" value={newAssign.participation_rate} onChange={e => setNewAssign(p => ({ ...p, participation_rate: e.target.value }))} className="w-full border rounded-lg px-3 py-2 mt-1" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">참여일수</label>
+                  <input type="number" value={newAssign.work_days} onChange={e => setNewAssign(p => ({ ...p, work_days: e.target.value }))} className="w-full border rounded-lg px-3 py-2 mt-1" />
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-2 mt-6">
+              <button onClick={() => setShowAddAssign(false)} className="flex-1 border rounded-lg py-2 text-sm">취소</button>
+              <button
+                disabled={!newAssign.employee_id}
+                onClick={async () => {
+                  const { error } = await supabase.from('project_assignments').insert({
+                    payroll_month_id: monthId,
+                    project_id: selectedProject,
+                    employee_id: newAssign.employee_id,
+                    participation_rate: Number(newAssign.participation_rate),
+                    work_days: Number(newAssign.work_days),
+                    salary_amount: 0, overtime_amount: 0, science_fund: 0,
+                    insurance_deduction: 0, income_tax: 0, resident_tax: 0,
+                    tax_subtotal: 0, net_pay: 0, employer_insurance: 0,
+                    employer_retirement: 0, total_cost: 0,
+                  });
+                  if (error) { setMsg(`오류: ${error.message}`); return; }
+                  const { data: assigns } = await supabase.from('project_assignments').select('*, employees(*), projects(*)').eq('payroll_month_id', monthId);
+                  if (assigns) setAssignments(assigns);
+                  setShowAddAssign(false);
+                  setNewAssign({ employee_id: '', participation_rate: '1', work_days: '31' });
+                  setMsg('배치 추가 완료 (재계산 필요)');
+                  setTimeout(() => setMsg(''), 3000);
+                }}
+                className="flex-1 bg-blue-600 text-white rounded-lg py-2 text-sm disabled:opacity-50"
+              >추가</button>
+            </div>
+          </div>
         </div>
       )}
     </div>

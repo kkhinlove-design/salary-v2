@@ -227,15 +227,46 @@ export default function Dashboard() {
                 </select>
               )}
             </div>
-            <p className="text-gray-500 text-sm mt-1">
-              지급일자: {month.pay_date || '-'} | 상태:
-              <span className={`ml-1 px-2 py-0.5 rounded-full text-xs ${
-                month.status === 'draft' ? 'bg-yellow-100 text-yellow-700' :
-                month.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
-              }`}>
-                {month.status === 'draft' ? '작성중' : month.status === 'confirmed' ? '확정' : '마감'}
-              </span>
-            </p>
+            <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
+              <span>지급일자: {month.pay_date || '-'}</span>
+              <span>|</span>
+              <select
+                value={month.status}
+                onChange={async (e) => {
+                  const newStatus = e.target.value;
+                  await supabase.from('payroll_months').update({ status: newStatus }).eq('id', month.id);
+                  setMonth({ ...month, status: newStatus as any });
+                  setMonths(prev => prev.map(m => m.id === month.id ? { ...m, status: newStatus as any } : m));
+                  setMessage(`상태 변경: ${newStatus === 'draft' ? '작성중' : newStatus === 'confirmed' ? '확정' : '마감'}`);
+                  setTimeout(() => setMessage(''), 2000);
+                }}
+                className={`px-2 py-0.5 rounded-full text-xs border-0 cursor-pointer ${
+                  month.status === 'draft' ? 'bg-yellow-100 text-yellow-700' :
+                  month.status === 'confirmed' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                }`}
+              >
+                <option value="draft">작성중</option>
+                <option value="confirmed">확정</option>
+                <option value="closed">마감</option>
+              </select>
+              <button
+                onClick={async () => {
+                  if (!confirm(`${formatYearMonth(month.year_month)} 데이터를 완전히 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.`)) return;
+                  await supabase.from('payroll_months').delete().eq('id', month.id);
+                  const remaining = months.filter(m => m.id !== month.id);
+                  setMonths(remaining);
+                  if (remaining.length > 0) {
+                    await loadMonth(remaining[0]);
+                  } else {
+                    setMonth(null);
+                  }
+                  setMessage('월 삭제 완료');
+                }}
+                className="text-xs text-red-400 hover:text-red-600 underline"
+              >
+                월 삭제
+              </button>
+            </div>
           </div>
         </div>
 
