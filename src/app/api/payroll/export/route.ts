@@ -40,6 +40,9 @@ export async function GET(req: NextRequest) {
     const projectIds = (matchProjects || []).map(p => p.id);
     if (projectIds.length > 0) {
       query = query.in('project_id', projectIds);
+    } else {
+      // 해당 정산시스템에 사업이 없으면 빈 결과 반환
+      return NextResponse.json({ month, system, summary: [], assignments: [], payrolls: [], deductions: [], employer: [] });
     }
   }
 

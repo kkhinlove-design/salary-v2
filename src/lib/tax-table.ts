@@ -47,7 +47,7 @@ export function lookupIncomeTax(
   const depIdx = Math.min(Math.max(dependents, 1), 11) - 1;
 
   // 1400만원 초과: 마지막 구간 세액 + 초과분의 45%
-  if (taxableIncome > 14000000) {
+  if (taxableIncome >= 14000000) {
     const baseTax = TAX_TABLE[TAX_TABLE.length - 1][2][depIdx];
     const excess = taxableIncome - 14000000;
     const tax = baseTax + Math.round(excess * 0.45);

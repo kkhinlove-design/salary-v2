@@ -48,6 +48,20 @@ export async function POST(req: NextRequest) {
     assignMap[a.employee_id].push(a);
   }
 
+  // 기존 공제 데이터에서 면제 여부 수집 (삭제 전)
+  const { data: existingDeductions } = await supabase
+    .from('personal_deductions')
+    .select('employee_id, national_pension, employment_insurance')
+    .eq('payroll_month_id', monthId);
+
+  const exemptMap: Record<string, { pension: boolean; employment: boolean }> = {};
+  for (const d of existingDeductions || []) {
+    exemptMap[d.employee_id] = {
+      pension: d.national_pension === 0,
+      employment: d.employment_insurance === 0,
+    };
+  }
+
   // 기존 공제/기관부담 삭제 후 재생성
   await supabase.from('personal_deductions').delete().eq('payroll_month_id', monthId);
   await supabase.from('employer_contributions').delete().eq('payroll_month_id', monthId);
@@ -63,8 +77,12 @@ export async function POST(req: NextRequest) {
     const emp = p.employees;
     const taxableBase = p.base_pay + p.position_allowance;
 
-    // 보험료 재계산
-    const insurance = calculateInsurance(taxableBase);
+    // 보험료 재계산 (면제자 반영)
+    const exempt = exemptMap[p.employee_id] || { pension: false, employment: false };
+    const insurance = calculateInsurance(taxableBase, {
+      exemptNationalPension: exempt.pension,
+      exemptEmployment: exempt.employment,
+    });
     const dependents = parseDependents(emp?.dependents);
     const taxableIncome = taxableBase + p.overtime_pay;
     const incomeTax = lookupIncomeTax(taxableIncome, dependents, emp?.tax_rate || 100);
