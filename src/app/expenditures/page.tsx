@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { formatKRW } from '@/lib/format';
 import type { ProjectExpenditure, ProjectAssignment } from '@/lib/types';
+import EditableCell from '@/components/EditableCell';
 
 export default function ExpendituresPage() {
   const [expenditures, setExpenditures] = useState<ProjectExpenditure[]>([]);
   const [assignments, setAssignments] = useState<ProjectAssignment[]>([]);
   const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [msg, setMsg] = useState('');
 
   useEffect(() => {
     async function load() {
@@ -34,24 +36,35 @@ export default function ExpendituresPage() {
     load();
   }, []);
 
+  async function updateAssignment(id: string, field: string, value: number) {
+    const { error } = await supabase.from('project_assignments').update({ [field]: value }).eq('id', id);
+    if (error) { setMsg(`오류: ${error.message}`); return; }
+    setAssignments(prev => prev.map(a => a.id === id ? { ...a, [field]: value } : a));
+    setMsg('저장됨 (대시보드에서 [자동 재계산] 실행 필요)');
+    setTimeout(() => setMsg(''), 3000);
+  }
+
   if (loading) {
     return <div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" /></div>;
   }
 
   const sum = (key: keyof ProjectExpenditure) => expenditures.reduce((s, e) => s + (Number(e[key]) || 0), 0);
-  const selectedAssignments = selectedProject
-    ? assignments.filter(a => a.project_id === selectedProject)
-    : [];
+  const selectedAssignments = selectedProject ? assignments.filter(a => a.project_id === selectedProject) : [];
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold">사업별 인건비 지출내역</h1>
-        <p className="text-gray-500 text-sm mt-1">
-          {expenditures.length}개 사업 | 총 지출: {formatKRW(sum('total'))}원
-        </p>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold">사업별 인건비 지출내역</h1>
+          <p className="text-gray-500 text-sm mt-1">
+            {expenditures.length}개 사업 | 총 지출: {formatKRW(sum('total'))}원
+            <span className="ml-2 text-blue-500 text-xs">(사업 클릭 → 참여율/참여일수 더블클릭 수정)</span>
+          </p>
+        </div>
+        {msg && <span className={`text-xs px-3 py-1 rounded ${msg.includes('오류') ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-700'}`}>{msg}</span>}
       </div>
 
+      {/* 사업별 요약 테이블 */}
       <div className="stat-card overflow-x-auto mb-6">
         <table className="data-table">
           <thead>
@@ -114,6 +127,7 @@ export default function ExpendituresPage() {
         </table>
       </div>
 
+      {/* 선택된 사업의 인원별 상세 (편집 가능) */}
       {selectedProject && selectedAssignments.length > 0 && (
         <div className="stat-card overflow-x-auto">
           <h3 className="text-lg font-bold mb-3">
@@ -124,9 +138,9 @@ export default function ExpendituresPage() {
               <tr>
                 <th>No</th>
                 <th>이름</th>
-                <th>참여율</th>
-                <th>참여일수</th>
-                <th>���여</th>
+                <th style={{ background: '#1e40af' }}>참여율</th>
+                <th style={{ background: '#1e40af' }}>참여일수</th>
+                <th>급여</th>
                 <th>초과수당</th>
                 <th>과기공제</th>
                 <th>사회보험</th>
@@ -141,9 +155,23 @@ export default function ExpendituresPage() {
               {selectedAssignments.map((a, i) => (
                 <tr key={a.id}>
                   <td>{i + 1}</td>
-                  <td>{a.employees?.name || '-'}</td>
-                  <td style={{ textAlign: 'center' }}>{(a.participation_rate * 100).toFixed(0)}%</td>
-                  <td style={{ textAlign: 'center' }}>{a.work_days}일</td>
+                  <td style={{ textAlign: 'left', fontWeight: 500 }}>{a.employees?.name || '-'}</td>
+                  <EditableCell
+                    value={a.participation_rate}
+                    onSave={v => updateAssignment(a.id, 'participation_rate', Number(v))}
+                    type="number"
+                    align="center"
+                    format={v => `${(Number(v) * 100).toFixed(0)}%`}
+                    className="!bg-blue-50"
+                  />
+                  <EditableCell
+                    value={a.work_days}
+                    onSave={v => updateAssignment(a.id, 'work_days', Number(v))}
+                    type="number"
+                    align="center"
+                    format={v => `${v}일`}
+                    className="!bg-blue-50"
+                  />
                   <td>{formatKRW(a.salary_amount)}</td>
                   <td>{formatKRW(a.overtime_amount)}</td>
                   <td>{formatKRW(a.science_fund)}</td>
