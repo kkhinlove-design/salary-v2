@@ -6,7 +6,7 @@ import { formatKRW } from '@/lib/format';
 import type { OvertimeSummary, OvertimeRecord } from '@/lib/types';
 import EditableCell from '@/components/EditableCell';
 import DeleteButton from '@/components/DeleteButton';
-import { Plus } from 'lucide-react';
+import { Plus, Upload } from 'lucide-react';
 
 export default function OvertimePage() {
   const [summary, setSummary] = useState<OvertimeSummary[]>([]);
@@ -19,6 +19,7 @@ export default function OvertimePage() {
   const [showAddRecord, setShowAddRecord] = useState(false);
   const [employees, setEmployees] = useState<{ id: string; name: string }[]>([]);
   const [newRec, setNewRec] = useState({ employee_id: '', work_date: '', clock_in: '', clock_out: '', in_type: '정상출근', out_type: '연장근무', note: '' });
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -88,6 +89,36 @@ export default function OvertimePage() {
     setTimeout(() => setMsg(''), 2000);
   }
 
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file || !monthId) return;
+    setUploading(true);
+    setMsg('');
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('monthId', monthId);
+      const res = await fetch('/api/overtime/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.success) {
+        setMsg(data.message + (data.skipped?.length ? ` (건너뜀: ${data.skipped.join(', ')})` : ''));
+        // 새로고침
+        const [{ data: s }, { data: r }] = await Promise.all([
+          supabase.from('overtime_summary').select('*, employees(name)').eq('payroll_month_id', monthId).order('overtime_pay', { ascending: false }),
+          supabase.from('overtime_records').select('*, employees(name)').eq('payroll_month_id', monthId).order('work_date'),
+        ]);
+        if (s) setSummary(s);
+        if (r) setRecords(r);
+      } else {
+        setMsg(`오류: ${data.error}`);
+      }
+    } catch (err: any) {
+      setMsg(`오류: ${err.message}`);
+    }
+    setUploading(false);
+    e.target.value = '';
+  }
+
   if (loading) {
     return <div className="flex items-center justify-center h-96"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" /></div>;
   }
@@ -107,6 +138,11 @@ export default function OvertimePage() {
         </div>
         <div className="flex gap-2 items-center">
           {msg && <span className="text-xs px-3 py-1 rounded bg-green-100 text-green-600">{msg}</span>}
+          <label className={`flex items-center gap-1.5 bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-amber-700 cursor-pointer ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+            <Upload size={16} />
+            {uploading ? '업로드 중...' : '수당조정 엑셀 업로드'}
+            <input type="file" accept=".xlsx,.xls" onChange={handleUpload} className="hidden" />
+          </label>
           <input type="text" placeholder="이름 검색..." value={search} onChange={e => setSearch(e.target.value)} className="border rounded-lg px-4 py-2 text-sm w-40" />
           <button onClick={() => setTab('summary')} className={`px-4 py-2 rounded-lg text-sm ${tab === 'summary' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>수당내역</button>
           <button onClick={() => setTab('detail')} className={`px-4 py-2 rounded-lg text-sm ${tab === 'detail' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>근무대장</button>
