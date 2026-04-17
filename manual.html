@@ -13,8 +13,6 @@
     color: #1e293b;
     background: white;
   }
-
-  /* 표지 */
   .cover {
     page-break-after: always;
     display: flex;
@@ -24,228 +22,43 @@
     height: 100vh;
     text-align: center;
   }
-  .cover h1 {
-    font-size: 32pt;
-    font-weight: 800;
-    color: #1e40af;
-    margin-bottom: 12px;
-  }
-  .cover .subtitle {
-    font-size: 16pt;
-    color: #475569;
-    margin-bottom: 40px;
-  }
-  .cover .info {
-    font-size: 11pt;
-    color: #64748b;
-    line-height: 2;
-  }
-  .cover .version {
-    margin-top: 60px;
-    padding: 12px 32px;
-    background: #eff6ff;
-    border-radius: 8px;
-    font-size: 10pt;
-    color: #1e40af;
-  }
-
-  /* 목차 */
-  .toc {
-    page-break-after: always;
-    padding-top: 40px;
-  }
-  .toc h2 {
-    font-size: 20pt;
-    color: #1e40af;
-    border-bottom: 3px solid #1e40af;
-    padding-bottom: 8px;
-    margin-bottom: 24px;
-  }
-  .toc ul {
-    list-style: none;
-    padding: 0;
-  }
-  .toc li {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px dotted #cbd5e1;
-    font-size: 11pt;
-  }
-  .toc li.section {
-    font-weight: 700;
-    font-size: 12pt;
-    margin-top: 12px;
-    border-bottom: none;
-    color: #1e40af;
-  }
-
-  /* 본문 */
-  h2 {
-    font-size: 18pt;
-    color: #1e40af;
-    border-bottom: 2px solid #1e40af;
-    padding-bottom: 6px;
-    margin: 32px 0 16px;
-    page-break-after: avoid;
-  }
-  h3 {
-    font-size: 13pt;
-    color: #1e3a8a;
-    margin: 20px 0 10px;
-    padding-left: 12px;
-    border-left: 4px solid #3b82f6;
-    page-break-after: avoid;
-  }
-  h4 {
-    font-size: 11pt;
-    color: #334155;
-    margin: 14px 0 8px;
-    font-weight: 700;
-  }
+  .cover h1 { font-size: 32pt; font-weight: 800; color: #1e40af; margin-bottom: 12px; }
+  .cover .subtitle { font-size: 16pt; color: #475569; margin-bottom: 40px; }
+  .cover .info { font-size: 11pt; color: #64748b; line-height: 2; }
+  .cover .version { margin-top: 60px; padding: 12px 32px; background: #eff6ff; border-radius: 8px; font-size: 10pt; color: #1e40af; }
+  .toc { page-break-after: always; padding-top: 40px; }
+  .toc h2 { font-size: 20pt; color: #1e40af; border-bottom: 3px solid #1e40af; padding-bottom: 8px; margin-bottom: 24px; }
+  .toc ul { list-style: none; padding: 0; }
+  .toc li { padding: 6px 0; border-bottom: 1px dotted #cbd5e1; font-size: 11pt; }
+  .toc li.section { font-weight: 700; font-size: 12pt; margin-top: 12px; border-bottom: none; color: #1e40af; }
+  h2 { font-size: 18pt; color: #1e40af; border-bottom: 2px solid #1e40af; padding-bottom: 6px; margin: 32px 0 16px; page-break-after: avoid; }
+  h3 { font-size: 13pt; color: #1e3a8a; margin: 20px 0 10px; padding-left: 12px; border-left: 4px solid #3b82f6; page-break-after: avoid; }
+  h4 { font-size: 11pt; color: #334155; margin: 14px 0 8px; font-weight: 700; }
   p { margin: 6px 0; }
-
-  .note {
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin: 12px 0;
-    font-size: 10pt;
-  }
+  .note { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 10pt; }
   .note strong { color: #1e40af; }
-
-  .warning {
-    background: #fef3c7;
-    border: 1px solid #fbbf24;
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin: 12px 0;
-    font-size: 10pt;
-  }
+  .warning { background: #fef3c7; border: 1px solid #fbbf24; border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 10pt; }
   .warning strong { color: #92400e; }
-
-  .step-box {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 16px;
-    margin: 12px 0;
-  }
-  .step-box .step-num {
-    display: inline-block;
-    width: 28px;
-    height: 28px;
-    background: #1e40af;
-    color: white;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 28px;
-    font-weight: 700;
-    font-size: 13pt;
-    margin-right: 10px;
-    vertical-align: middle;
-  }
-  .step-box .step-title {
-    font-weight: 700;
-    font-size: 11pt;
-    vertical-align: middle;
-  }
-  .step-box .step-desc {
-    margin-top: 8px;
-    padding-left: 38px;
-    font-size: 10pt;
-    color: #475569;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 12px 0;
-    font-size: 9.5pt;
-  }
-  th {
-    background: #1e293b;
-    color: white;
-    padding: 8px 10px;
-    text-align: center;
-    font-weight: 600;
-  }
-  td {
-    padding: 6px 10px;
-    border: 1px solid #e2e8f0;
-  }
+  .step-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 12px 0; }
+  .step-box .step-num { display: inline-block; width: 28px; height: 28px; background: #1e40af; color: white; border-radius: 50%; text-align: center; line-height: 28px; font-weight: 700; font-size: 13pt; margin-right: 10px; vertical-align: middle; }
+  .step-box .step-title { font-weight: 700; font-size: 11pt; vertical-align: middle; }
+  .step-box .step-desc { margin-top: 8px; padding-left: 38px; font-size: 10pt; color: #475569; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 9.5pt; }
+  th { background: #1e293b; color: white; padding: 8px 10px; text-align: center; font-weight: 600; }
+  td { padding: 6px 10px; border: 1px solid #e2e8f0; }
   tr:nth-child(even) td { background: #f8fafc; }
-
-  .flow-chart {
-    background: #f1f5f9;
-    border-radius: 12px;
-    padding: 20px;
-    margin: 16px 0;
-    text-align: center;
-    font-size: 10pt;
-  }
-  .flow-chart .flow-step {
-    display: inline-block;
-    background: white;
-    border: 2px solid #3b82f6;
-    border-radius: 8px;
-    padding: 8px 16px;
-    margin: 4px;
-    font-weight: 600;
-  }
-  .flow-chart .flow-arrow {
-    display: inline-block;
-    color: #3b82f6;
-    font-size: 16pt;
-    vertical-align: middle;
-    margin: 0 4px;
-  }
-  .flow-chart .flow-auto {
-    background: #dbeafe;
-    border-color: #1e40af;
-    color: #1e40af;
-  }
-
+  .flow-chart { background: #f1f5f9; border-radius: 12px; padding: 20px; margin: 16px 0; text-align: center; font-size: 10pt; }
+  .flow-chart .flow-step { display: inline-block; background: white; border: 2px solid #3b82f6; border-radius: 8px; padding: 8px 16px; margin: 4px; font-weight: 600; }
+  .flow-chart .flow-arrow { display: inline-block; color: #3b82f6; font-size: 16pt; vertical-align: middle; margin: 0 4px; }
+  .flow-chart .flow-auto { background: #dbeafe; border-color: #1e40af; color: #1e40af; }
   .page-break { page-break-before: always; }
-
-  .url-box {
-    background: #1e293b;
-    color: #38bdf8;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-family: monospace;
-    font-size: 12pt;
-    text-align: center;
-    margin: 16px 0;
-    letter-spacing: 0.5px;
-  }
-
-  .menu-table td:first-child {
-    font-weight: 700;
-    white-space: nowrap;
-    width: 120px;
-  }
-
-  .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 8pt;
-    font-weight: 600;
-  }
+  .url-box { background: #1e293b; color: #38bdf8; padding: 12px 20px; border-radius: 8px; font-family: monospace; font-size: 12pt; text-align: center; margin: 16px 0; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 8pt; font-weight: 600; }
   .badge-auto { background: #dbeafe; color: #1e40af; }
   .badge-manual { background: #fef3c7; color: #92400e; }
   .badge-new { background: #dcfce7; color: #166534; }
-
-  footer {
-    text-align: center;
-    font-size: 8pt;
-    color: #94a3b8;
-    margin-top: 40px;
-    padding-top: 12px;
-    border-top: 1px solid #e2e8f0;
-  }
+  .kbd { display: inline-block; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; padding: 1px 6px; font-size: 9pt; font-family: monospace; }
+  footer { text-align: center; font-size: 8pt; color: #94a3b8; margin-top: 40px; padding-top: 12px; border-top: 1px solid #e2e8f0; }
 </style>
 </head>
 <body>
@@ -257,10 +70,11 @@
   <div class="subtitle">사용자 매뉴얼</div>
   <div class="info">
     산학융합원 경영관리팀<br>
-    2026년 4월
+    2026년 4월 (최종 업데이트)
   </div>
   <div class="version">
-    시스템 버전 2.0 | Next.js + Supabase 기반 웹 애플리케이션
+    시스템 버전 2.1 | Next.js + Supabase 기반 웹 애플리케이션<br>
+    전 페이지 인라인 편집 + 수당조정 엑셀 업로드 지원
   </div>
 </div>
 
@@ -270,28 +84,26 @@
   <ul>
     <li class="section">1. 시스템 개요</li>
     <li>&nbsp;&nbsp;&nbsp;1.1 접속 방법</li>
-    <li>&nbsp;&nbsp;&nbsp;1.2 화면 구성</li>
+    <li>&nbsp;&nbsp;&nbsp;1.2 화면 구성 (8개 메뉴)</li>
     <li>&nbsp;&nbsp;&nbsp;1.3 자동화 범위</li>
-    <li class="section">2. 매월 업무 흐름</li>
+    <li>&nbsp;&nbsp;&nbsp;1.4 공통 조작법: 더블���릭 편집 / 추�� / 삭제</li>
+    <li class="section">2. 매월 업무 흐름 (5단계)</li>
     <li>&nbsp;&nbsp;&nbsp;2.1 새 급여월 생성</li>
-    <li>&nbsp;&nbsp;&nbsp;2.2 변경사항 입력</li>
-    <li>&nbsp;&nbsp;&nbsp;2.3 자동 재계산</li>
-    <li>&nbsp;&nbsp;&nbsp;2.4 검증 및 확정</li>
-    <li>&nbsp;&nbsp;&nbsp;2.5 정산시스템별 내보내기</li>
+    <li>&nbsp;&nbsp;&nbsp;2.2 변경사항 입력 (참여율, 연봉, 입퇴사)</li>
+    <li>&nbsp;&nbsp;&nbsp;2.3 초과근무 수당조정 엑셀 업로드</li>
+    <li>&nbsp;&nbsp;&nbsp;2.4 자동 재계산</li>
+    <li>&nbsp;&nbsp;&nbsp;2.5 검증, 보정, 확정</li>
+    <li>&nbsp;&nbsp;&nbsp;2.6 정산시스템별 내보내기</li>
     <li class="section">3. 메뉴별 상세 안내</li>
-    <li>&nbsp;&nbsp;&nbsp;3.1 대시보드</li>
+    <li>&nbsp;&nbsp;&nbsp;3.1 대시보드 (월 관리 중심)</li>
     <li>&nbsp;&nbsp;&nbsp;3.2 직원관리</li>
     <li>&nbsp;&nbsp;&nbsp;3.3 사업관리</li>
     <li>&nbsp;&nbsp;&nbsp;3.4 급여총괄</li>
-    <li>&nbsp;&nbsp;&nbsp;3.5 개인공제</li>
+    <li>&nbsp;&nbsp;&nbsp;3.5 개인공���</li>
     <li>&nbsp;&nbsp;&nbsp;3.6 기관부담</li>
     <li>&nbsp;&nbsp;&nbsp;3.7 초과근무</li>
     <li>&nbsp;&nbsp;&nbsp;3.8 사업별 지출</li>
     <li class="section">4. 자동 계산 기준</li>
-    <li>&nbsp;&nbsp;&nbsp;4.1 4대보험 요율</li>
-    <li>&nbsp;&nbsp;&nbsp;4.2 소득세 간이세액표</li>
-    <li>&nbsp;&nbsp;&nbsp;4.3 사업별 배분 로직</li>
-    <li>&nbsp;&nbsp;&nbsp;4.4 초과수당 계산식</li>
     <li class="section">5. 자주 묻는 질문 (FAQ)</li>
   </ul>
 </div>
@@ -300,306 +112,265 @@
 <h2>1. 시스템 개요</h2>
 
 <h3>1.1 접속 방법</h3>
-<p>웹 브라우저에서 아래 주소로 접속합니다. 별도 로그인 없이 바로 사용 가능합니다.</p>
 <div class="url-box">https://salary-v2.vercel.app</div>
-<div class="note">
-  <strong>권장 브라우저:</strong> Chrome, Edge, Safari 최신 버전. 모바일에서도 접속 가능하나 PC 환경을 권장합니다.
-</div>
+<div class="note"><strong>권장:</strong> Chrome/Edge 최신 버전, PC 환경. 별도 로그인 없이 바로 사용 가능.</div>
 
-<h3>1.2 화면 구성</h3>
-<p>좌측 사이드바에서 메뉴를 선택하여 이동합니다.</p>
-<table class="menu-table">
-  <tr><th>메뉴</th><th>기능</th><th>주요 데이터</th></tr>
-  <tr><td>대시보드</td><td>월별 요약 + 핵심 액션 버튼</td><td>총괄 통계, 사업별 지출 현황</td></tr>
-  <tr><td>직원관리</td><td>직원 목록 및 기본정보</td><td>이름, 연봉, 입사일, 부양가족, 과기공제</td></tr>
-  <tr><td>사업관리</td><td>사업 목록 및 재원정보</td><td>사업명, 정산시스템, 재원구분</td></tr>
-  <tr><td>급여총괄</td><td>전 직원 급여 상세</td><td>과세/비과세 구분, 초과수당, 지급총액</td></tr>
-  <tr><td>개인공제</td><td>4대보험 + 원천세 + 과기공제</td><td>보험료, 소득세, 주민세, 실지급액</td></tr>
-  <tr><td>기관부담</td><td>기관부담 보험료 + 퇴직연금</td><td>5종 보험 + 퇴직연금, 입사일</td></tr>
-  <tr><td>초과근무</td><td>수당내역 + 근무대장</td><td>지급단가, 인정시간, 초과수당</td></tr>
-  <tr><td>사업별 지출</td><td>사업별 인건비 배분 상세</td><td>사업 클릭 시 인원별 참여율/배분 확인</td></tr>
+<h3>1.2 화면 ��성</h3>
+<table>
+  <tr><th>메뉴</th><th>기능</th><th>편집</th><th>추가/삭제</th></tr>
+  <tr><td><b>대시보드</b></td><td>월별 요약 + 핵심 액션</td><td>월 상태(작성중/확정/마감)</td><td>새 월 생성 / 월 삭제</td></tr>
+  <tr><td><b>직원관리</b></td><td>직원 목록</td><td>이름, 연봉, 입사일, 부양가족, 세율, 과기공제, 상태</td><td>직원 추가 / 삭제</td></tr>
+  <tr><td><b>사업관리</b></td><td>사업 목록</td><td>사업명, 재원구분, 정산시스템, 대체집행, 상태</td><td>사업 추��� / 삭제</td></tr>
+  <tr><td><b>급여총괄</b></td><td>전 직원 급여</td><td>직책수당, 교통비, 식비, 보육수당, 초과수당, 기타</td><td>-</td></tr>
+  <tr><td><b>개인공제</b></td><td>보험+세금 공제</td><td>국민연금, 건강, 요양, 고용, 소득세, 주민세, 과기공제</td><td>-</td></tr>
+  <tr><td><b>기관부담</b></td><td>기관 보험+퇴직연금</td><td>국민연금, 건강, 요양, 고용, 산재, 퇴직연금</td><td>-</td></tr>
+  <tr><td><b>초과근무</b></td><td>수당+근무대장</td><td>인정시간, 수당, 판정, 비고 등 전 필드</td><td>엑셀 업로드 / 기록추가 / 삭제</td></tr>
+  <tr><td><b>사업별 지출</b></td><td>사업별 배분 상세</td><td>참여율, 참여일수</td><td>직원 배치 추가 / 해제</td></tr>
 </table>
 
 <h3>1.3 자동화 범위</h3>
-<p>기존 엑셀 수기 작업 대비 자동화된 항목입니다.</p>
 <table>
-  <tr><th>항목</th><th>기존 방식</th><th>시스템 방식</th><th>상태</th></tr>
-  <tr><td>4대보험료 (6종)</td><td>공단 고지서 수기 복사 (800건)</td><td>보수월액 기반 자동 산출</td><td><span class="badge badge-auto">자동</span></td></tr>
-  <tr><td>소득세 / 주민세</td><td>간이세액표 조회 후 수기 (86건)</td><td>과세단가+부양가족 자동 조회</td><td><span class="badge badge-auto">자동</span></td></tr>
-  <tr><td>사업별 급여 배분</td><td>참여율 수식 (이미 자동)</td><td>참여율 입력 시 자동 배분</td><td><span class="badge badge-auto">자동</span></td></tr>
-  <tr><td>반올림 +-1원 보정</td><td>수동 보정 (10건+)</td><td>잔액 자동 보정</td><td><span class="badge badge-auto">자동</span></td></tr>
-  <tr><td>퇴직연금</td><td>수식 (이미 자동)</td><td>연봉/12 자동 산출</td><td><span class="badge badge-auto">자동</span></td></tr>
-  <tr><td>전월 복제</td><td>46개 시트 복사+수정</td><td>[새 월 생성] 버튼 1회</td><td><span class="badge badge-new">신규</span></td></tr>
-  <tr><td>정산 내보내기</td><td>시트별 수동 추출</td><td>시스템별 CSV 다운로드</td><td><span class="badge badge-new">신규</span></td></tr>
-  <tr><td>참여율 변경</td><td>사업시트 개별 수정</td><td>담당자 수기 입력 필요</td><td><span class="badge badge-manual">수동</span></td></tr>
-  <tr><td>초과근무 기록</td><td>대장 수기 작성</td><td>담당자 수기 입력 필요</td><td><span class="badge badge-manual">수동</span></td></tr>
-  <tr><td>중도입퇴사</td><td>일할계산 하드코딩</td><td>참여일수 변경으로 자동 반영</td><td><span class="badge badge-auto">자동</span></td></tr>
+  <tr><th>항목</th><th>기존 엑셀</th><th>시스템</th></tr>
+  <tr><td>4대보험료 6종</td><td>공단 고지서 수기 복사 (800건/월)</td><td><span class="badge badge-auto">���동</span> 요율 기반 산출</td></tr>
+  <tr><td>소득세 / 주민세</td><td>간이세액표 조회 후 수기 (86건)</td><td><span class="badge badge-auto">자동</span> 내장 세액표 조회</td></tr>
+  <tr><td>38개 사업 배분</td><td>참여율 수식</td><td><span class="badge badge-auto">자동</span> 참여율 비례 + 잔액보정</td></tr>
+  <tr><td>반올림 +-1원 보정</td><td>수동 10건+</td><td><span class="badge badge-auto">자동</span></td></tr>
+  <tr><td>퇴직연금</td><td>수식</td><td><span class="badge badge-auto">자동</span> 연봉/12</td></tr>
+  <tr><td>전월 복제</td><td>46개 시트 복사+수정</td><td><span class="badge badge-new">신규</span> [새 월 생성] 1클릭</td></tr>
+  <tr><td>초과근무 입력</td><td>대장 수기 153건</td><td><span class="badge badge-new">신규</span> 수당조정 엑셀 업로드</td></tr>
+  <tr><td>정산 서류</td><td>시트별 수동 추출</td><td><span class="badge badge-new">신규</span> 시스템별 CSV 다운로드</td></tr>
+  <tr><td>참여율 변경</td><td>사업시트 개별 수정</td><td><span class="badge badge-manual">수동</span> 더블클릭 수정</td></tr>
 </table>
+
+<h3>1.4 공통 조작법</h3>
+<table>
+  <tr><th>동작</th><th>방법</th><th>설명</th></tr>
+  <tr><td><b>셀 편집</b></td><td>해당 셀을 <span class="kbd">더블클릭</span></td><td>입력창이 나타남. Enter로 저장, Esc로 취소</td></tr>
+  <tr><td><b>행 삭제</b></td><td>행 끝의 <span class="kbd">휴지통 아이콘</span> 클릭</td><td>확인 팝업 후 삭제. 되돌리기 불가</td></tr>
+  <tr><td><b>항목 추가</b></td><td>상단의 <span class="kbd">+ 추가</span> 버튼 클릭</td><td>모달 팝업에서 정보 입력 후 추가</td></tr>
+  <tr><td><b>검색</b></td><td>우측 상단 검색창에 이름 입력</td><td>실시간 필터링</td></tr>
+  <tr><td><b>상태 토��</b></td><td>재직/퇴사, 활성/종료 뱃지 클릭</td><td>클릭 한 번으로 상태 전환</td></tr>
+</table>
+<div class="note"><strong>자동 반영:</strong> 개인공제/기관부담에서 보험료를 수정하면 소계, 합계, 실지급액이 자동 재계산됩니다. 급여총괄에서 수당을 수정하면 비과세소계, 지급총액이 자동 반영됩니다.</div>
 
 <!-- ===== 2. 매월 업무 흐름 ===== -->
 <div class="page-break"></div>
-<h2>2. 매월 업무 흐름</h2>
+<h2>2. 매월 업��� 흐름</h2>
 
 <div class="flow-chart">
-  <div class="flow-step flow-auto">1. 새 월 생성<br><small>(자동: 전월복제+계산)</small></div>
+  <div class="flow-step flow-auto">1. 새 월 생성<br><small>(전월복제+자동계산)</small></div>
   <span class="flow-arrow">&rarr;</span>
-  <div class="flow-step">2. 변경사항 입력<br><small>(참여율/초과근무)</small></div>
+  <div class="flow-step">2. 변경사항 입력<br><small>(참여율/입퇴사)</small></div>
   <span class="flow-arrow">&rarr;</span>
-  <div class="flow-step flow-auto">3. 자동 재계산<br><small>(보험/세금/배분)</small></div>
+  <div class="flow-step flow-auto">3. 수당조정 업로드<br><small>(엑셀 파일)</small></div>
   <span class="flow-arrow">&rarr;</span>
-  <div class="flow-step">4. 검증/확정</div>
+  <div class="flow-step flow-auto">4. 자동 재계산</div>
   <span class="flow-arrow">&rarr;</span>
-  <div class="flow-step flow-auto">5. 내보내기<br><small>(정산시스템별 CSV)</small></div>
+  <div class="flow-step">5. 검증/보정/확정</div>
+  <span class="flow-arrow">&rarr;</span>
+  <div class="flow-step flow-auto">6. 내보내기</div>
 </div>
 
 <h3>2.1 새 급여월 생성</h3>
-<p>매월 초, 새 급여월을 생성합니다. 이 한 번의 클릭으로 대부분의 데이터가 자동 생성됩니다.</p>
-
 <div class="step-box">
-  <span class="step-num">1</span>
-  <span class="step-title">대시보드에서 [새 월 생성] 버튼 클릭</span>
-  <div class="step-desc">우측 상단 파란색 버튼</div>
+  <span class="step-num">1</span><span class="step-title">대시보드 &gt; [새 월 생성] 클릭 (파란 버튼)</span>
+  <div class="step-desc">급여월(YYYY-MM)과 지급일자를 입력하고 [생성]</div>
 </div>
-<div class="step-box">
-  <span class="step-num">2</span>
-  <span class="step-title">급여월과 지급일자 입력</span>
-  <div class="step-desc">
-    - 급여월: 해당 월 선택 (예: 2026-04)<br>
-    - 지급일자: 급여 지급 예정일 (예: 2026-05-02)
-  </div>
-</div>
-<div class="step-box">
-  <span class="step-num">3</span>
-  <span class="step-title">[생성] 클릭</span>
-  <div class="step-desc">
-    자동으로 처리되는 항목:<br>
-    - 전월 직원 정보 및 참여율 복제<br>
-    - 4대보험료 6종 자동 산출 (국민연금, 건강, 요양, 고용, 산재)<br>
-    - 소득세/주민세 간이세액표 자동 조회<br>
-    - 퇴직연금 자동 계산 (연봉/12)<br>
-    - 38개 사업별 인건비 배분 자동 생성<br>
-    - 사업별 지출 요약 자동 집계
-  </div>
-</div>
+<p>자동 처리: 전월 직원/참여율 복제, 4대보험 6종 산출, 소득세/주민세 조회, 퇴직연금, 38개 사업 배분, 지출요약 집계. 약 5~10초 소요.</p>
 
-<div class="note">
-  <strong>소요 시간:</strong> 약 5~10초. 84명 x 38개 사업 기준으로 약 700건의 데이터가 자동 생성됩니다.
-</div>
-
-<h3>2.2 변경사항 입력</h3>
-<p>새 월 생성 후, 전월과 달라진 부분만 수정합니다.</p>
-
-<h4>변경이 필요한 경우:</h4>
+<h3>2.2 변��사항 입력</h3>
 <table>
-  <tr><th>변경 유형</th><th>수정 방법</th><th>빈도</th></tr>
-  <tr><td>참여율 변경</td><td>Supabase 대시보드에서 project_assignments 테이블의 participation_rate 수정</td><td>매월 일부</td></tr>
-  <tr><td>초과근무 시간</td><td>초과근무 데이터 입력 후 재계산</td><td>매월</td></tr>
-  <tr><td>중도 입사</td><td>직원 추가 + 참여율/참여일수 설정</td><td>발생시</td></tr>
-  <tr><td>중도 퇴사</td><td>직원 비활성화 + 해당 월 참여일수 조정</td><td>발생시</td></tr>
-  <tr><td>연봉 변경</td><td>employees 테이블의 annual_salary 수정</td><td>연 1회</td></tr>
+  <tr><th>변경 유형</th><th>조작 위치</th><th>방법</th></tr>
+  <tr><td>참여율 변경</td><td>사업별 지출 &gt; 사업 클릭 &gt; 참여율 셀</td><td>더블클릭 ��정</td></tr>
+  <tr><td>중도 입사</td><td>직원관리 &gt; [직원 추가]<br>사업별 지출 &gt; [직원 배치 추가]</td><td>직원 등록 후 사업에 배치</td></tr>
+  <tr><td>중도 퇴사</td><td>직원��리 &gt; 상태 뱃지 클릭 (재직&rarr;퇴사)<br>사업별 지출 &gt; 참여일수 수정</td><td>상태 변경 + 일수 조정</td></tr>
+  <tr><td>연봉 변경</td><td>직원관�� &gt; 연봉월액 셀</td><td>더블클릭 수정</td></tr>
+  <tr><td>수당 변경</td><td>급여총괄 &gt; 직책수당/교통비 등</td><td>더블클릭 수���</td></tr>
+  <tr><td>사업 추가</td><td>��업관리 &gt; [사업 추가]</td><td>사업명, 재원, 정산시스템 입력</td></tr>
 </table>
 
-<h3>2.3 자동 재계산</h3>
-<p>변경사항 입력 후, 보험료/소득세/배분을 일괄 재계산합니다.</p>
-
+<h3>2.3 초��근무 수당조정 엑셀 업로드</h3>
 <div class="step-box">
-  <span class="step-num">1</span>
-  <span class="step-title">대시보드에서 [자동 재계산] 버튼 클릭 (초록색)</span>
-  <div class="step-desc">확인 팝업에서 [확인] 클릭</div>
+  <span class="step-num">1</span><span class="step-title">초과근무 페이지 &gt; [수당조정 엑셀 업로드] (주황 버튼)</span>
+  <div class="step-desc">파일 선택 창에서 <b>수당조정_YYYY-MM.xlsx</b> 파일을 선택</div>
 </div>
 <div class="step-box">
-  <span class="step-num">2</span>
-  <span class="step-title">재계산 완료 메시지 확인</span>
+  <span class="step-num">2</span><span class="step-title">자동 파싱 및 저장</span>
   <div class="step-desc">
-    재계산 대상:<br>
-    - 개인공제 (보험료 + 소득세/주민세) 전원 재계산<br>
-    - 기관부담 (보험료 + 퇴직연금) 전원 재계산<br>
-    - 사업별 배분 (참여율 비례) 전체 재생성<br>
-    - 사업별 지출 요약 재집계
+    시트1 <b>"수당조정 요약"</b>: 이름/부서/직급/지급단가/인정시간합계/최종금액 &rarr; 수당내역 테이블<br>
+    시트2 <b>"일별 상세"</b>: 이름/날짜/연차/출장/인정시간/수당 &rarr; 근무대장 테이블<br>
+    추가로 급여총괄의 초과수당도 자동 연동됩니다.
   </div>
 </div>
+<div class="warning"><strong>주의:</strong> 업로드 시 해당 월의 기존 초과근무 데이터가 교체됩니다. 수정이 필요한 경우 업로드 후 더블클릭으로 보정하세요.</div>
+<div class="note"><strong>엑셀 파일 양식:</strong> 시트명이 정확히 "수당조정 요약"과 "��별 상세"여야 합니다. 컬럼 순서: A=이름, B=부서, C=직급, D=지급단가(요약)/날짜(상세)...</div>
 
-<div class="warning">
-  <strong>주의:</strong> 재계산은 기존 공제/기관부담/배분 데이터를 삭제하고 새로 생성합니다. 수동으로 보정한 값이 있다면 재계산 후 다시 확인해주세요.
+<h3>2.4 자동 재계산</h3>
+<div class="step-box">
+  <span class="step-num">1</span><span class="step-title">대시보드 &gt; [자동 재계산] 클릭 (초록 ��튼)</span>
+  <div class="step-desc">확인 팝업에서 [확인]. 전원의 보험료/소득세/배분이 현재 데이터 기준으로 일괄 재계산됩니다.</div>
 </div>
+<div class="warning"><strong>주의:</strong> 재계산은 공제/기관부담/배분 데이터를 삭제 후 새로 생성합니다. 수동 보정했던 값은 초기화됩니다. 자동 재계산 후 필요한 보정을 다시 해주세요.</div>
 
-<h3>2.4 검증 및 확정</h3>
-<p>각 메뉴에서 데이터를 확인합니다.</p>
+<h3>2.5 검증, 보정, 확정</h3>
 <table>
-  <tr><th>확인 항목</th><th>확인 메뉴</th><th>확인 포인트</th></tr>
-  <tr><td>급여총액</td><td>급여총괄</td><td>연봉월액, 직책수당, 비과세 항목 확인</td></tr>
-  <tr><td>보험료 정확성</td><td>개인공제</td><td>국민연금 면제자 등 특수 케이스</td></tr>
-  <tr><td>소득세 정확성</td><td>개인공제</td><td>부양가족수 변동, 120% 적용자 확인</td></tr>
-  <tr><td>기관부담</td><td>기관부담</td><td>퇴직연금, 산재보험 확인</td></tr>
-  <tr><td>사업별 배분</td><td>사업별 지출</td><td>사업 클릭하여 인원별 상세 확인</td></tr>
-  <tr><td>합계 일치</td><td>대시보드</td><td>급여총액, 기관부담총액 확인</td></tr>
+  <tr><th>확인 메뉴</th><th>확인 포인��</th><th>보정 ���법</th></tr>
+  <tr><td>급���총괄</td><td>연봉월액, 수당, 지급총액</td><td>해당 셀 더블클릭</td></tr>
+  <tr><td>개인공제</td><td>���험료 면제자, 소득세 특수 케이스</td><td>해당 보험료/세금 셀 더블클릭으로 0 입력 등</td></tr>
+  <tr><td>기관부담</td><td>퇴직연금, 산재보험</td><td>해당 셀 ���블클릭</td></tr>
+  <tr><td>사업별 지���</td><td>사업 클릭 &gt; 인원별 상세 확인</td><td>참여율/참여일수 더블클릭</td></tr>
+  <tr><td>대시���드</td><td>총괄 합계 확인 후 상태를 <b>"확정"</b>으로 변경</td><td>상태 드롭다운 클릭</td></tr>
 </table>
 
-<h3>2.5 정산시스템별 내보내기</h3>
-<p>확정 후 정산 시스템에 제출할 데이터를 다운로드합니다.</p>
-
+<h3>2.6 정산시스템별 내보내기</h3>
 <div class="step-box">
-  <span class="step-num">1</span>
-  <span class="step-title">대시보드에서 [내보내기] 버튼 클릭 (회색)</span>
-  <div class="step-desc">드롭다운 메뉴가 나타납니다</div>
-</div>
-<div class="step-box">
-  <span class="step-num">2</span>
-  <span class="step-title">원하는 정산시스템 선택</span>
+  <span class="step-num">1</span><span class="step-title">대시보드 &gt; [내보내기] &gt; 정산시스템 선택</span>
   <div class="step-desc">
-    - <strong>전체 내보내기:</strong> 모든 사업의 지출내역<br>
-    - <strong>E-나라도움:</strong> 자유무역, 군산의봄, 고용특구, 잡센터류 등 16개 사업<br>
-    - <strong>RCMS:</strong> 김제 퀵스타트, 완주 퀵스타트 등 2개 사업<br>
-    - <strong>보탬e:</strong> 화학물질, 특수분야, 친환경선박 등 8개 사업<br>
-    - <strong>운영비 계좌(기업은행):</strong> 운영비, 스마트제조 등 5개 사업<br>
-    - <strong>계좌이체(기업은행):</strong> 김제일자리센터 1개 사업
+    <b>전체 내보내기</b>: 모든 사업<br>
+    <b>E-나라도움</b>: 자유무역, 군산의봄, 고용특구, 잡센터류 (16개)<br>
+    <b>RCMS</b>: 김제/완주 퀵스타트 (2개)<br>
+    <b>보탬e</b>: 화학물질, 특수분야, 친환경선박 등 (8개)<br>
+    <b>운영비 계좌</b>: 운영비, 스마트제조 등 (5개)<br>
+    <b>계좌이체</b>: 김제일자리센터 (1개)
   </div>
 </div>
-<div class="step-box">
-  <span class="step-num">3</span>
-  <span class="step-title">CSV 파일 다운로드 확인</span>
-  <div class="step-desc">Excel에서 열어 정산시스템 제출 양식에 맞게 활용합니다.</div>
-</div>
+<p>CSV 파일이 다운로드됩니다. Excel에서 바로 열 수 있습니다 (UTF-8 BOM 포함).</p>
 
 <!-- ===== 3. 메뉴별 상세 ===== -->
 <div class="page-break"></div>
 <h2>3. 메뉴별 상세 안내</h2>
 
 <h3>3.1 대시보드</h3>
-<p>시스템의 메인 화면입니다. 모든 핵심 액션이 이 화면에서 시작됩니다.</p>
-<h4>주요 요소:</h4>
 <table>
-  <tr><th>영역</th><th>내용</th></tr>
-  <tr><td>월 선택 드롭다운</td><td>생성된 급여월 간 전환 가능. 최신 월이 기본 선택</td></tr>
+  <tr><th>영역</th><th>기능</th></tr>
+  <tr><td>월 선택 드롭다운</td><td>생성된 급여월 간 전환</td></tr>
+  <tr><td>상태 드롭다운</td><td>작성중 / 확정 / 마감 전환 (클릭으로 변경)</td></tr>
+  <tr><td>월 삭제</td><td>"월 삭제" 링크 클릭. 해당 월의 모든 데이터 삭제 (확인 팝업)</td></tr>
   <tr><td>총 인건비 지출</td><td>급여+초과수당+기관부담+퇴직연금 합산</td></tr>
-  <tr><td>통계 카드 6개</td><td>지급대상, 급여총액, 초과수당, 기관부담, 퇴직연금, 활성사업수</td></tr>
-  <tr><td>사업별 지출 테이블</td><td>전체 사업의 인건비 배분 요약 (엑셀 '사업별 지출내역' 시트와 동일)</td></tr>
-  <tr><td>액션 버튼 3개</td><td>[새 월 생성], [자동 재계산], [내보내기]</td></tr>
+  <tr><td>통계 카드 6개</td><td>지급대상, 급여총액, 초과수당, ���관부담, 퇴직연금, 활성사업수</td></tr>
+  <tr><td>[새 월 생성]</td><td>전월 복제 + 일괄 자동계산</td></tr>
+  <tr><td>[자동 재계산]</td><td>현재 월 공제/기관부담/배분 재생성</td></tr>
+  <tr><td>[내보내기]</td><td>정산시스템별 CSV 다운로드</td></tr>
 </table>
 
 <h3>3.2 직원관리</h3>
-<p>전 직원의 기본정보를 조회합니다. 이름 검색 기능을 지원합니다.</p>
-<h4>표시 항목:</h4>
-<p>이름, 입사일, 기산일, 연봉월액, 부양가족수, 세율, 과기공제, 재직/퇴사 상태</p>
+<p>전 직원 목록. 이름 검색 지원.</p>
+<h4>편집 가능 필드 (더블클릭):</h4>
+<p>이름 | 입사일 | 연봉월액 | 부양가족 | 세율(100%/120%) | 과기공제 | 재직상태(클릭 토글)</p>
+<h4>[직원 추가] 버튼:</h4>
+<p>이름(필수), 연봉월액, 입사일, 부양가족수, 세율 입력. 추가 후 사업별 지출에서 배치 필요.</p>
 
 <h3>3.3 사업관리</h3>
-<p>전체 사업 목록과 재원 정보를 확인합니다.</p>
-<h4>표시 항목:</h4>
-<p>사업명, 재원구분(국비/도비/군비/시비/운영비), 정산시스템, 대체집행 여부, 이번달 급여/총지출</p>
+<p>전체 사업 목록. 사업명 검색 지원.</p>
+<h4>편집 가능 필드 (더블클릭):</h4>
+<p>사업명 | 재원구분(국비/도비/군비/시비/운영비 선택) | 정산시스템(E-나라도움/RCMS/보탬e 등 선택) | 대체집행(토글) | 활성상태(토글)</p>
+<h4>[사업 추가] 버��:</h4>
+<p>사업명(필수), 재원구분, 정산시스템, 대체집행 여부 입력.</p>
 
 <h3>3.4 급여총괄</h3>
-<p>엑셀의 '총괄' 시트와 동일한 내용입니다.</p>
-<h4>컬럼 구성:</h4>
-<p>이름 | 연봉월액 | 월급여(과세) | 직책수당 | 교통비 | 식비 | 보육수당 | 비과세소계 | 사업총계 | 초과수당 | 기타 | 지급총액</p>
+<p>엑셀 '총괄' 시트와 동일. 이름 검�� 지원.</p>
+<h4>편집 가능 필드 (더블클릭):</h4>
+<p>직책수당 | 교통비 | 식비 | 보육수당 | <b>초과수당</b>(노란 배경) | ��타</p>
+<h4>자동 계산:</h4>
+<p>비과세소계 = 교통비+식비+보육수당, 지급총액 = 연봉월액+초과수당+기타</p>
 
 <h3>3.5 개인공제</h3>
-<p>엑셀의 '개인공제' 시트와 동일합니다. 상단에 보험료/원천세 합계가 표시됩니다.</p>
-<h4>컬럼 구성:</h4>
-<p>이름 | 국민연금 | 건강보험 | 장기요양 | 고용보험 | 보험소계 | 소득세 | 주민세 | 세금소계 | 과기공제 | 공제합계 | <strong>실지급액</strong></p>
-<div class="note">
-  <strong>자동 계산:</strong> 보험료 4종은 요율 기반 자동 산출, 소득세는 간이세액표 자동 조회, 주민세는 소득세의 10%로 자동 계산됩니다.
-</div>
+<p>엑셀 '개인공제' 시트와 동일.</p>
+<h4>편집 가능 필드 (��블클릭):</h4>
+<p>국민연금 | 건강보험 | 장기요양 | 고용보험 | 소득세 | 주민세 | 과기공제</p>
+<h4>자동 계산:</h4>
+<p>보험소계 = 4종 합, 세금소계 = 소득세+주민세, 공제합계 = 보험소계+세금소계+과기공제, 실지급액 자동 반영</p>
+<div class="note"><strong>보정 팁:</strong> 공단 고지서와 차이가 있으면 해당 보험료 셀을 더블클릭해서 고지서 금액으로 직접 수정하세요. 소계와 실지급액이 자동으로 재계산됩니다.</div>
 
 <h3>3.6 기관부담</h3>
-<p>엑셀의 '기관부담' 시트와 동일합니다.</p>
-<h4>컬럼 구성:</h4>
-<p>이름 | 국민연금 | 건강보험 | 장기요양 | 고용보험 | 산재보험 | 보험소계 | 퇴직연금 | 합계 | 입사일자 | 기산일자</p>
+<p>엑�� '기관부담' 시트와 동일.</p>
+<h4>편집 가능 필드 (더블클릭):</h4>
+<p>국민연금 | 건강보험 | 장기요양 | 고용보험 | 산��보험 | 퇴직연금</p>
+<h4>자동 계산:</h4>
+<p>보험소계 = 5종 합, 합계 = 보험소계+퇴직연금</p>
 
 <h3>3.7 초과근무</h3>
-<p>두 개의 탭으로 구성됩니다.</p>
-<h4>[수당내역] 탭:</h4>
-<p>이름 | 소속사업 | 지급단가 | 통상시급 | 인정시간 | 초과수당</p>
-<h4>[근무대장] 탭:</h4>
-<p>이름 | 근무일 | 출근시간 | 퇴근시간 | 출근판정 | 퇴근판정 | 연장근무 | 인정시간 | 비고</p>
+<h4>[수당조정 엑셀 업로드] (주황 버튼):</h4>
+<p><b>수당조정_YYYY-MM.xlsx</b> 파일 업로드. "수당조정 요약" 시트와 "일별 상세" 시트를 자동 파싱하여 수당내역과 근무대장에 반영. 급여총괄의 초과수당도 자동 연동.</p>
+
+<h4>[수당내역] 탭 - 편집 가능:</h4>
+<p>소속사업(더블클릭) | 인정시간(노란 배경, 더블클릭 &rarr; 수당 자동 재계산) | 초과수당(더블클릭)</p>
+
+<h4>[근무대장] 탭 - 편집 가능:</h4>
+<p>근무일 | 출근판정(정상/휴일/조기 선택) | 퇴근판정(연장/휴일/정�� 선택) | 인정시간 | 비고</p>
+<p>[기록 추가] 버튼으로 개별 근무기록 추가 가능. 행별 삭제 지원.</p>
 
 <h3>3.8 사업별 지출</h3>
-<p>엑셀의 '사업별 지출내역' 시트 + 개별 사업 시트를 통합한 화면입니다.</p>
-<h4>사업 클릭 시 하단에 인원별 상세가 펼쳐집니다:</h4>
-<p>이름 | 참여율 | 참여일수 | 급여 | 초과수당 | 과기공제 | 사회보험 | 원천세 | 실지급액 | 기관보험 | 퇴직연금 | 총부담액</p>
+<p>상단: 사업별 지출 요약 테이블 (클릭으로 선택). 하단: 선택 사업의 인원별 상세.</p>
+<h4>인원별 상세 - 편집 가능:</h4>
+<p><b>참여율</b>(파란 배경, 더블���릭 &rarr; 0~1 소수 입력) | <b>참여일수</b>(파란 배경, 더블클릭)</p>
+<h4>[직원 배치 추가] 버튼:</h4>
+<p>아직 이 사업에 배치되지 않은 직원을 선택하고 참여율/참여일수를 입력하여 추가. 추가 후 [자동 재계산] 실행 필요.</p>
+<p>행 끝 휴지통 아이콘으로 배치 해제(삭제) 가능.</p>
 
 <!-- ===== 4. 자동 계산 기준 ===== -->
 <div class="page-break"></div>
-<h2>4. 자동 계산 기준</h2>
+<h2>4. 자�� 계산 기준</h2>
 
 <h3>4.1 4대보험 요율 (2026년 기준)</h3>
 <table>
-  <tr><th>보험종류</th><th>기준</th><th>개인부담</th><th>기관부담</th><th>합계</th></tr>
-  <tr><td>국민연금</td><td>기준소득월액</td><td>4.5%</td><td>4.5%</td><td>9.0%</td></tr>
-  <tr><td>건강보험</td><td>보수월액</td><td>3.545%</td><td>3.545%</td><td>7.09%</td></tr>
-  <tr><td>장기요양</td><td>건강보험의</td><td>13.14%</td><td>13.14%</td><td>(건강보험 기반)</td></tr>
-  <tr><td>고용보험(개인)</td><td>보수월액</td><td>0.9%</td><td>-</td><td>0.9%</td></tr>
-  <tr><td>고용보험(기업)</td><td>보수월액</td><td>-</td><td>1.15%</td><td>1.15%</td></tr>
-  <tr><td>산재보험</td><td>보수월액</td><td>-</td><td>0.659%</td><td>0.659%</td></tr>
-</table>
-<div class="note">
-  <strong>국민연금 상/하한:</strong> 기준소득월액 상한 6,170,000원 / 하한 390,000원<br>
-  <strong>보험료 면제:</strong> 강승구 등 국민연금/고용보험 면제자는 전월 데이터를 기준으로 자동 판별됩니다.
-</div>
-
-<h3>4.2 소득세 간이세액표</h3>
-<p>국세청 근로소득 간이세액표를 시스템에 내장하여 자동 조회합니다.</p>
-<h4>계산 기준:</h4>
-<table>
-  <tr><th>항목</th><th>산출 방법</th></tr>
-  <tr><td>과세소득</td><td>월급여(과세) + 직책수당 + 초과수당</td></tr>
-  <tr><td>부양가족수</td><td>직원관리의 부양가족 컬럼 (본인 포함)</td></tr>
-  <tr><td>소득세</td><td>간이세액표[과세소득 구간][부양가족수] x 세율(100% 또는 120%)</td></tr>
-  <tr><td>주민세</td><td>소득세 x 10% (10원 미만 절사)</td></tr>
+  <tr><th>보험종류</th><th>기준</th><th>개인부담</th><th>기관부담</th></tr>
+  <tr><td>국민연금</td><td>기준소득월액 (상한 617만, 하한 39만)</td><td>4.5%</td><td>4.5%</td></tr>
+  <tr><td>건���보험</td><td>보수월액</td><td>3.545%</td><td>3.545%</td></tr>
+  <tr><td>장기요양</td><td>건강보험의 13.14%</td><td>50%</td><td>50%</td></tr>
+  <tr><td>고용보험</td><td>보수월액</td><td>0.9%</td><td>1.15%</td></tr>
+  <tr><td>산재보험</td><td>보수월액</td><td>-</td><td>0.659%</td></tr>
 </table>
 
-<h3>4.3 사업별 배분 로직</h3>
-<h4>급여 배분:</h4>
-<p><code>사업별 급여 = 연봉월액 x 참여율 / 기준일수 x 참여일수</code></p>
-<h4>보험료/세금 배분:</h4>
-<p><code>사업별 보험료 = 전체 보험료 x 참여율 (비례배분)</code></p>
-<h4>반올림 잔액 보정:</h4>
-<p>비례배분 시 반올림으로 인한 +-1원 차이는 최대 참여율 사업에 자동 할당됩니다. 기존 엑셀에서 수동으로 +1/-1 보정하던 작업이 불필요합니다.</p>
+<h3>4.2 소득세</h3>
+<p>과세단가(월급여+직책수당+초과수당) + 부양가족수 &rarr; 간이세액표 자동 조회. 주민세 = 소득세 x 10%.</p>
 
-<h3>4.4 초과수당 계산식</h3>
-<table>
-  <tr><th>항목</th><th>계산식</th></tr>
-  <tr><td>통상시급</td><td>연봉월액 / 209시간</td></tr>
-  <tr><td>지급단가</td><td>통상시급 x 1.5배</td></tr>
-  <tr><td>초과수당</td><td>MIN(지급단가 x 인정시간, 350,000원)</td></tr>
-</table>
-<div class="note">
-  <strong>350,000원 상한:</strong> 초과수당은 월 350,000원을 초과할 수 없습니다. 상한 초과 시 자동으로 350,000원이 적용됩니다.
-</div>
+<h3>4.3 사업별 배���</h3>
+<p>급여: 연봉월액 x 참여율 / 기준일수 x 참여일수. 보험/세금: 참여율 비례. 반올림 잔액: 최대 참여율 사업에 자동 할당.</p>
+
+<h3>4.4 초과수당</h3>
+<p>지급단가 = 연봉월액 / 209 x 1.5. 상한 350,000원. 수당조정 엑셀 업로드 시 자동 반영.</p>
+
+<h3>4.5 퇴직연금</h3>
+<p>ROUND(연봉���액 / 12, 0)</p>
 
 <!-- ===== 5. FAQ ===== -->
 <div class="page-break"></div>
 <h2>5. 자주 묻는 질문 (FAQ)</h2>
 
-<h3>Q1. 새 직원이 입사했을 때는?</h3>
-<p>Supabase 대시보드에서 employees 테이블에 새 직원 추가 후, project_assignments에 참여율을 설정합니다. 그 후 [자동 재계산]을 실행하면 보험료/소득세/배분이 자동으로 생성됩니다.</p>
+<h3>Q1. 새 직원이 입사했을 때?</h3>
+<p>직원관리 &gt; [직원 추가] &gt; 사업별 지출 &gt; 해당 사업 클릭 &gt; [직�� 배치 추가] &gt; 대시보드 &gt; [자동 재계산]</p>
 
-<h3>Q2. 직원이 퇴사했을 때는?</h3>
-<p>employees 테이블에서 is_active를 false로 변경합니다. 해당 월의 참여일수를 실제 근무일수로 조정한 후 [자동 재계산]을 실행합니다.</p>
+<h3>Q2. 직원이 퇴사했을 때?</h3>
+<p>직원관리 &gt; 재직 뱃지 클릭(퇴사로 전환) &gt; 사업별 지출에서 참여일수를 실제 근무일수로 수�� &gt; [자동 재계산]</p>
 
-<h3>Q3. 연봉이 인상되었을 때는?</h3>
-<p>employees 테이블의 annual_salary를 변경합니다. 다음 월 생성 시 자동으로 반영됩니다. 이미 생성된 월에 반영하려면 payroll_details의 monthly_salary도 수정한 후 [자동 재계산]을 실행합니다.</p>
+<h3>Q3. 보험료가 공단 고지서와 다를 때?</h3>
+<p>개인공제 또는 기관부담 페이지에서 해당 보험료 셀을 더블클릭하여 고지서 금액으��� 직접 수정. 소계와 합계가 자동 반영됩니다.</p>
 
-<h3>Q4. 보험료가 공단 고지서와 다를 때는?</h3>
-<p>시스템은 요율 기반으로 계산하므로, 공단의 정산/조정에 의해 수원~수십 원 차이가 발생할 수 있습니다. 이 경우 Supabase에서 해당 직원의 personal_deductions 또는 employer_contributions 값을 직접 수정하세요.</p>
+<h3>Q4. 수당조정 엑셀 파일을 다시 업로드하면?</h3>
+<p>기존 초과근무 데이터가 새 파일로 교체됩니다. 업로드 후 수동 보정이 필요하면 더블클릭으로 수정하세요.</p>
 
-<h3>Q5. 참여율을 변경하고 싶을 때는?</h3>
-<p>Supabase 대시보드에서 project_assignments 테이블의 participation_rate를 수정한 후 [자동 재계산]을 실행합니다. 보험료/세금/배분이 새 참여율 기준으로 재계산됩니다.</p>
+<h3>Q5. 참여율을 변경한 후에는?</h3>
+<p>사업별 지출에서 참여율 수정 후 반드시 대시보드 &gt; [���동 재계산]을 실행해야 보험/세금/배분에 반영됩니다.</p>
 
-<h3>Q6. 소득세가 120% 적용인 직원은?</h3>
-<p>employees 테이블의 tax_rate를 120으로 설정하면 소득세가 간이세액의 120%로 자동 계산됩니다. (예: 비거주자 또는 선택적 120% 원천징수)</p>
+<h3>Q6. 이전 월 데이터를 수정하려면?</h3>
+<p>대시보드 상단 월 선택 드롭다운에서 해당 월로 전환. 수정 후 [자동 재계산]. 단 정산 완료된 월은 주의.</p>
 
-<h3>Q7. 국민연금 면제자는 어떻게 처리하나요?</h3>
-<p>새 월 생성 시, 전월에 국민연금이 0원이었던 직원은 자동으로 면제 처리됩니다. 신규 면제자가 발생한 경우 Supabase에서 해당 직원의 personal_deductions에서 national_pension을 0으로 수정하세요.</p>
+<h3>Q7. 급여월을 잘못 만들었을 ���?</h3>
+<p>대시보드 &gt; "월 삭제" 링크 클릭. 해당 월의 모든 데이터가 완전 삭��됩니다 (되돌리��� 불가).</p>
 
-<h3>Q8. 이전 월 데이터를 수정할 수 있나요?</h3>
-<p>대시보드 상단의 월 선택 드롭다운에서 해당 월을 선택한 후 [자동 재계산]을 실행하면 됩니다. 단, 이미 정산이 완료된 월은 수정 시 주의가 필요합니다.</p>
+<h3>Q8. CSV 파일 한글이 깨질 때?</h3>
+<p>CSV는 UTF-8 BOM으로 저장됩니다. Excel에서 더���클릭으로 열면 정상 표시. 깨지면: Excel &gt; 데���터 &gt; 텍스트에서 &gt; UTF-8 선택.</p>
 
-<h3>Q9. CSV 파일을 엑셀에서 열 때 한글이 깨진다면?</h3>
-<p>CSV 파일은 UTF-8 BOM 형식으로 저장됩니다. Excel에서 바로 더블클릭으로 열면 정상 표시됩니다. 만약 깨지면: Excel > 데이터 > 텍스트에서 > 인코딩 UTF-8 선택</p>
+<h3>Q9. 국민연금 면제자 처리?</h3>
+<p>자동 재계산 시 전월에 국민연금이 0원이었던 직원은 면제로 처���됩니다. 신규 면제자는 개인공제 페이지에서 국민연금을 0으로 수정하세요.</p>
+
+<h3>Q10. 자동 계산값을 수동으로 보정한 후 재계산하면?</h3>
+<p>재계산은 공제/기관부담/배분을 삭제 후 새로 생성하므로 수동 보정값이 초기화됩니다. 재계산 후 다시 보정해주세요. 보정이 필요한 항목이 많으면 재계산 전에 메모해두시기 바랍니다.</p>
 
 <br><br>
 <footer>
-  인건비 관리 시스템 v2 &copy; 2026 산학융합원 | 기술지원: 경영관리팀
+  인건비 관리 시스템 v2.1 &copy; 2026 산학융합원 | 경영관리팀 | https://salary-v2.vercel.app
 </footer>
 
 </body>
