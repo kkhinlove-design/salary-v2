@@ -11,12 +11,20 @@ import { distributeEmployee } from '@/lib/distribution';
  * body: { monthId: string }
  */
 export async function POST(req: NextRequest) {
-  const supabase = getServiceClient();
-  const { monthId } = await req.json();
-
-  if (!monthId) {
-    return NextResponse.json({ error: 'monthId 필요' }, { status: 400 });
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: '올바른 JSON 요청이 필요합니다' }, { status: 400 });
   }
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return NextResponse.json({ error: '요청 본문은 객체여야 합니다' }, { status: 400 });
+  }
+  const { monthId } = body as Record<string, unknown>;
+  if (typeof monthId !== 'string' || !monthId.trim()) {
+    return NextResponse.json({ error: '유효한 monthId 문자열이 필요합니다' }, { status: 400 });
+  }
+  const supabase = getServiceClient();
 
   // 월 정보
   const { data: month, error: monthError } = await supabase
