@@ -19,28 +19,32 @@ export async function POST(req: NextRequest) {
   }
 
   // 월 정보
-  const { data: month } = await supabase
+  const { data: month, error: monthError } = await supabase
     .from('payroll_months')
     .select('*')
     .eq('id', monthId)
     .single();
+  if (monthError && monthError.code !== 'PGRST116') return NextResponse.json({ error: '급여 월 정보를 조회하지 못했습니다' }, { status: 500 });
   if (!month) return NextResponse.json({ error: '해당 월을 찾을 수 없습니다' }, { status: 404 });
 
   // 급여 상세 로드
-  const { data: payrolls } = await supabase
+  const { data: payrolls, error: payrollError } = await supabase
     .from('payroll_details')
     .select('*, employees(*)')
     .eq('payroll_month_id', monthId);
 
+  if (payrollError) return NextResponse.json({ error: '급여 상세를 조회하지 못했습니다' }, { status: 500 });
   if (!payrolls || payrolls.length === 0) {
     return NextResponse.json({ error: '급여 데이터가 없습니다' }, { status: 404 });
   }
 
   // 기존 배치 로드
-  const { data: existingAssignments } = await supabase
+  const { data: existingAssignments, error: assignmentError } = await supabase
     .from('project_assignments')
     .select('*')
     .eq('payroll_month_id', monthId);
+
+  if (assignmentError) return NextResponse.json({ error: '사업 배분을 조회하지 못했습니다' }, { status: 500 });
 
   const assignMap: Record<string, any[]> = {};
   for (const a of existingAssignments || []) {
@@ -49,10 +53,12 @@ export async function POST(req: NextRequest) {
   }
 
   // 기존 공제 데이터에서 면제 여부 수집 (삭제 전)
-  const { data: existingDeductions } = await supabase
+  const { data: existingDeductions, error: deductionError } = await supabase
     .from('personal_deductions')
     .select('employee_id, national_pension, employment_insurance')
     .eq('payroll_month_id', monthId);
+
+  if (deductionError) return NextResponse.json({ error: '공제 정보를 조회하지 못했습니다' }, { status: 500 });
 
   const exemptMap: Record<string, { pension: boolean; employment: boolean }> = {};
   for (const d of existingDeductions || []) {
@@ -61,6 +67,10 @@ export async function POST(req: NextRequest) {
       employment: d.employment_insurance === 0,
     };
   }
+
+  // 집계에 필요한 사업 정보도 기존 데이터를 변경하기 전에 확인한다.
+  const { data: projects, error: projectError } = await supabase.from('projects').select('id, fund_source');
+  if (projectError) return NextResponse.json({ error: '사업 정보를 조회하지 못했습니다' }, { status: 500 });
 
   // 기존 공제/기관부담 삭제 후 재생성
   await supabase.from('personal_deductions').delete().eq('payroll_month_id', monthId);
@@ -211,7 +221,7 @@ export async function POST(req: NextRequest) {
     t.total += a.salary_amount + a.overtime_amount + a.employer_insurance + a.employer_retirement;
   }
 
-  const { data: projects } = await supabase.from('projects').select('id, fund_source');
+
   const fundMap = Object.fromEntries((projects || []).map(p => [p.id, p.fund_source]));
   const expRows = Object.values(projTotals).map((t: any) => ({ ...t, note: fundMap[t.project_id] || null }));
   await batchInsert('project_expenditures', expRows);
