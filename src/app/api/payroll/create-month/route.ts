@@ -267,67 +267,76 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // 5. 일괄 삽입
-  const batchInsert = async (table: string, rows: any[]) => {
-    for (let i = 0; i < rows.length; i += 50) {
-      const { error } = await supabase.from(table).insert(rows.slice(i, i + 50));
-      if (error) console.error(`${table} batch ${i}:`, error.message);
-    }
-    return rows.length;
-  };
+  try {
+    // 5. 일괄 삽입
+    const batchInsert = async (table: string, rows: any[]) => {
+      for (let i = 0; i < rows.length; i += 50) {
+        const { error } = await supabase.from(table).insert(rows.slice(i, i + 50));
+        if (error) throw new Error('급여 데이터 저장 실패');
+      }
+      return rows.length;
+    };
 
-  results.payroll = await batchInsert('payroll_details', payrollRows);
-  results.deductions = await batchInsert('personal_deductions', deductionRows);
-  results.employer = await batchInsert('employer_contributions', employerRows);
-  results.assignments = await batchInsert('project_assignments', assignmentRows);
-  results.employees = employees.length;
+    results.payroll = await batchInsert('payroll_details', payrollRows);
+    results.deductions = await batchInsert('personal_deductions', deductionRows);
+    results.employer = await batchInsert('employer_contributions', employerRows);
+    results.assignments = await batchInsert('project_assignments', assignmentRows);
+    results.employees = employees.length;
 
-  // 6. 사업별 지출 요약 자동 생성
-  const projTotals: Record<string, any> = {};
-  for (const a of assignmentRows) {
-    const pid = a.project_id;
-    if (!projTotals[pid]) {
-      projTotals[pid] = {
-        payroll_month_id: monthId,
-        project_id: pid,
-        salary: 0, overtime: 0, science_fund: 0,
-        insurance_personal: 0, withholding_tax: 0, net_pay: 0,
-        employer_insurance: 0, employer_retirement: 0, employer_subtotal: 0,
-        total: 0,
-      };
+    // 6. 사업별 지출 요약 자동 생성
+    const projTotals: Record<string, any> = {};
+    for (const a of assignmentRows) {
+      const pid = a.project_id;
+      if (!projTotals[pid]) {
+        projTotals[pid] = {
+          payroll_month_id: monthId,
+          project_id: pid,
+          salary: 0, overtime: 0, science_fund: 0,
+          insurance_personal: 0, withholding_tax: 0, net_pay: 0,
+          employer_insurance: 0, employer_retirement: 0, employer_subtotal: 0,
+          total: 0,
+        };
+      }
+      const t = projTotals[pid];
+      t.salary += a.salary_amount;
+      t.overtime += a.overtime_amount;
+      t.science_fund += a.science_fund;
+      t.insurance_personal += a.insurance_deduction;
+      t.withholding_tax += a.tax_subtotal;
+      t.net_pay += a.net_pay;
+      t.employer_insurance += a.employer_insurance;
+      t.employer_retirement += a.employer_retirement;
+      t.employer_subtotal += a.employer_insurance + a.employer_retirement;
+      t.total += a.salary_amount + a.overtime_amount + a.employer_insurance + a.employer_retirement;
     }
-    const t = projTotals[pid];
-    t.salary += a.salary_amount;
-    t.overtime += a.overtime_amount;
-    t.science_fund += a.science_fund;
-    t.insurance_personal += a.insurance_deduction;
-    t.withholding_tax += a.tax_subtotal;
-    t.net_pay += a.net_pay;
-    t.employer_insurance += a.employer_insurance;
-    t.employer_retirement += a.employer_retirement;
-    t.employer_subtotal += a.employer_insurance + a.employer_retirement;
-    t.total += a.salary_amount + a.overtime_amount + a.employer_insurance + a.employer_retirement;
+
+    const expRows = Object.values(projTotals).map((t: any) => ({
+      ...t,
+      note: fundMap[t.project_id] || null,
+    }));
+
+    results.expenditures = await batchInsert('project_expenditures', expRows);
+
+    // 7. 총괄 업데이트
+    const { error: summaryError } = await supabase.from('payroll_months').update({
+      total_employees: employees.length,
+      total_salary: totalSalary,
+      total_overtime: totalOvertime,
+      total_employer_insurance: totalEmpIns,
+      total_retirement: totalRetirement,
+    }).eq('id', monthId);
+    if (summaryError) throw new Error('급여 총괄 저장 실패');
+
+    return NextResponse.json({
+      success: true,
+      message: `${yearMonth} 급여 데이터 생성 완료`,
+      ...results,
+    });
+  } catch {
+    return NextResponse.json({
+      error: '급여 생성이 중단됐습니다. 일부 데이터가 저장됐을 수 있으므로 해당 월의 내역을 확인해 주세요.',
+      monthId,
+    }, { status: 500 });
   }
 
-  const expRows = Object.values(projTotals).map((t: any) => ({
-    ...t,
-    note: fundMap[t.project_id] || null,
-  }));
-
-  results.expenditures = await batchInsert('project_expenditures', expRows);
-
-  // 7. 총괄 업데이트
-  await supabase.from('payroll_months').update({
-    total_employees: employees.length,
-    total_salary: totalSalary,
-    total_overtime: totalOvertime,
-    total_employer_insurance: totalEmpIns,
-    total_retirement: totalRetirement,
-  }).eq('id', monthId);
-
-  return NextResponse.json({
-    success: true,
-    message: `${yearMonth} 급여 데이터 생성 완료`,
-    ...results,
-  });
 }
