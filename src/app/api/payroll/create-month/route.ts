@@ -29,26 +29,69 @@ export async function POST(req: NextRequest) {
   }
   const supabase = getServiceClient();
   // 이미 존재하는지 확인
-  const { data: existing } = await supabase
+  const { data: existing, error: existingError } = await supabase
     .from('payroll_months')
     .select('id')
     .eq('year_month', yearMonth)
     .limit(1);
+  if (existingError) return NextResponse.json({ error: '기존 월 조회에 실패했습니다' }, { status: 500 });
   if (existing && existing.length > 0) {
     return NextResponse.json({ error: `${yearMonth}은 이미 존재합니다` }, { status: 409 });
   }
 
   // 전월 찾기
-  const { data: prevMonths } = await supabase
+  const { data: prevMonths, error: previousError } = await supabase
     .from('payroll_months')
     .select('id, year_month')
     .lt('year_month', yearMonth)
     .order('year_month', { ascending: false })
     .limit(1);
 
+  if (previousError) return NextResponse.json({ error: '전월 조회에 실패했습니다' }, { status: 500 });
+
   const prevMonthId = prevMonths?.[0]?.id;
 
-  // 1. 새 월 생성
+  // 2. 활성 직원 로드
+  const { data: employees, error: employeesError } = await supabase
+    .from('employees')
+    .select('*')
+    .eq('is_active', true);
+
+  if (employeesError) return NextResponse.json({ error: '직원 조회에 실패했습니다' }, { status: 500 });
+
+  // 3. 전월 급여 데이터 로드 (기본값으로 사용)
+  let prevPayroll: Record<string, any> = {};
+  let prevAssignments: Record<string, any[]> = {};
+
+  if (prevMonthId) {
+    const { data: prevPay, error: payrollError } = await supabase
+      .from('payroll_details')
+      .select('*')
+      .eq('payroll_month_id', prevMonthId);
+    if (payrollError) return NextResponse.json({ error: '전월 급여 조회에 실패했습니다' }, { status: 500 });
+    if (prevPay) {
+      prevPayroll = Object.fromEntries(prevPay.map(p => [p.employee_id, p]));
+    }
+
+    const { data: prevAssign, error: assignmentsError } = await supabase
+      .from('project_assignments')
+      .select('*')
+      .eq('payroll_month_id', prevMonthId);
+    if (assignmentsError) return NextResponse.json({ error: '전월 참여율 조회에 실패했습니다' }, { status: 500 });
+    if (prevAssign) {
+      for (const a of prevAssign) {
+        if (!prevAssignments[a.employee_id]) prevAssignments[a.employee_id] = [];
+        prevAssignments[a.employee_id].push(a);
+      }
+    }
+  }
+
+  // 사업 정보 가져와서 비고(fund_source) 매핑
+  const { data: projects, error: projectsError } = await supabase.from('projects').select('id, fund_source');
+  if (projectsError) return NextResponse.json({ error: '사업 정보 조회에 실패했습니다' }, { status: 500 });
+  const fundMap = Object.fromEntries((projects || []).map(p => [p.id, p.fund_source]));
+
+  // 모든 선행 조회가 성공한 뒤 새 월 생성
   const { data: newMonth, error: monthErr } = await supabase
     .from('payroll_months')
     .insert({
@@ -69,39 +112,8 @@ export async function POST(req: NextRequest) {
   const monthId = newMonth.id;
   const results = { monthId, employees: 0, payroll: 0, deductions: 0, employer: 0, assignments: 0, expenditures: 0 };
 
-  // 2. 활성 직원 로드
-  const { data: employees } = await supabase
-    .from('employees')
-    .select('*')
-    .eq('is_active', true);
-
   if (!employees || employees.length === 0) {
     return NextResponse.json({ ...results, message: '활성 직원이 없습니다' });
-  }
-
-  // 3. 전월 급여 데이터 로드 (기본값으로 사용)
-  let prevPayroll: Record<string, any> = {};
-  let prevAssignments: Record<string, any[]> = {};
-
-  if (prevMonthId) {
-    const { data: prevPay } = await supabase
-      .from('payroll_details')
-      .select('*')
-      .eq('payroll_month_id', prevMonthId);
-    if (prevPay) {
-      prevPayroll = Object.fromEntries(prevPay.map(p => [p.employee_id, p]));
-    }
-
-    const { data: prevAssign } = await supabase
-      .from('project_assignments')
-      .select('*')
-      .eq('payroll_month_id', prevMonthId);
-    if (prevAssign) {
-      for (const a of prevAssign) {
-        if (!prevAssignments[a.employee_id]) prevAssignments[a.employee_id] = [];
-        prevAssignments[a.employee_id].push(a);
-      }
-    }
   }
 
   // 4. 각 직원별 자동 계산
@@ -296,10 +308,6 @@ export async function POST(req: NextRequest) {
     t.employer_subtotal += a.employer_insurance + a.employer_retirement;
     t.total += a.salary_amount + a.overtime_amount + a.employer_insurance + a.employer_retirement;
   }
-
-  // 사업 정보 가져와서 비고(fund_source) 매핑
-  const { data: projects } = await supabase.from('projects').select('id, fund_source');
-  const fundMap = Object.fromEntries((projects || []).map(p => [p.id, p.fund_source]));
 
   const expRows = Object.values(projTotals).map((t: any) => ({
     ...t,
