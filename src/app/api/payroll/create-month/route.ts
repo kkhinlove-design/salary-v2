@@ -133,8 +133,8 @@ export async function POST(req: NextRequest) {
     const salary = emp.annual_salary || prev.monthly_salary || 0;
     const basePay = prev.base_pay || salary - (prev.nontax_subtotal || 0);
     const positionAllowance = prev.position_allowance || 0;
-    const transport = prev.transport || 200000;
-    const meal = prev.meal || 200000;
+    const transport = prev.transport ?? 200000;
+    const meal = prev.meal ?? 200000;
     const childcare = prev.childcare || 0;
     const nontaxSubtotal = transport + meal + childcare;
     const overtimePay = 0; // 초과수당은 매월 새로 입력
