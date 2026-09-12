@@ -11,13 +11,23 @@ import { distributeEmployee } from '@/lib/distribution';
  * body: { yearMonth: "2026-04", payDate?: "2026-05-02", baseWorkDays?: 30 }
  */
 export async function POST(req: NextRequest) {
-  const supabase = getServiceClient();
-  const { yearMonth, payDate, baseWorkDays = 31 } = await req.json();
-
-  if (!yearMonth || !/^\d{4}-\d{2}$/.test(yearMonth)) {
-    return NextResponse.json({ error: '올바른 형식: YYYY-MM' }, { status: 400 });
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: '올바른 JSON 요청이 필요합니다' }, { status: 400 });
   }
-
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return NextResponse.json({ error: '요청 본문은 객체여야 합니다' }, { status: 400 });
+  }
+  const { yearMonth, payDate, baseWorkDays = 31 } = body as Record<string, unknown>;
+  if (typeof yearMonth !== 'string' || !/^\d{4}-(0[1-9]|1[0-2])$/.test(yearMonth) || Number(yearMonth.slice(0, 4)) === 0) {
+    return NextResponse.json({ error: '유효한 연월을 YYYY-MM 형식으로 입력해 주세요' }, { status: 400 });
+  }
+  if (typeof baseWorkDays !== 'number' || !Number.isInteger(baseWorkDays) || baseWorkDays < 1 || baseWorkDays > 31) {
+    return NextResponse.json({ error: '기준일수는 1~31 사이의 정수여야 합니다' }, { status: 400 });
+  }
+  const supabase = getServiceClient();
   // 이미 존재하는지 확인
   const { data: existing } = await supabase
     .from('payroll_months')
