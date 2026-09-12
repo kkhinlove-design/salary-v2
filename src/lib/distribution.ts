@@ -76,10 +76,10 @@ export function distributeEmployee(
 ): DistributionResult[] {
   const rates = assignments.map(a => a.participationRate);
 
-  // 급여는 참여율 × 참여일수/기준일수로 계산
-  const salaries = assignments.map(a =>
-    Math.round(pay.monthlySalary * a.participationRate / baseWorkDays * a.workDays)
-  );
+  // 참여일수까지 반영한 비율로 일할 총액을 구한 뒤 반올림 잔액을 보정한다.
+  const salaryRates = assignments.map(a => a.participationRate * a.workDays / baseWorkDays);
+  const totalSalaryRate = salaryRates.reduce((sum, rate) => sum + rate, 0);
+  const salaries = distributeWithRemainder(Math.round(pay.monthlySalary * totalSalaryRate), salaryRates);
 
   // 초과수당, 과기공제, 보험, 세금은 참여율 비례 배분
   const overtimes = distributeWithRemainder(pay.overtimePay, rates);
@@ -88,9 +88,7 @@ export function distributeEmployee(
   const incomeTaxes = distributeWithRemainder(pay.incomeTax, rates);
   const residentTaxes = distributeWithRemainder(pay.residentTax, rates);
   const empInsurances = distributeWithRemainder(pay.insuranceEmployer, rates);
-  const retirements = assignments.map(a =>
-    Math.round(pay.retirementPension * a.participationRate / baseWorkDays * a.workDays)
-  );
+  const retirements = distributeWithRemainder(Math.round(pay.retirementPension * totalSalaryRate), salaryRates);
 
   return assignments.map((a, i) => {
     const taxSub = incomeTaxes[i] + residentTaxes[i];
